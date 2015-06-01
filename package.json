@@ -1,0 +1,26 @@
+{
+  "name": "baghira",
+  "version": "0.0.0",
+  "description": "learning devstack based on react-flux architecture, aiming for isomorphic feature",
+  "main": "index.jsx",
+  "scripts": {
+    "test": "node baghira"
+  },
+  "repository": {
+    "type": "git",
+    "url": "tbd"
+  },
+  "keywords": [
+    "react",
+    "flux",
+	"learning",
+	"isomorphic"
+  ],
+  "author": "David Fogas",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.12.4",
+    "express": "^4.12.4",
+    "mongoose": "^4.0.4"
+  }
+}
