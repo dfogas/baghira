@@ -7,9 +7,7 @@ var webpackBuild = require('./webpack/build');
 var webpackDevServer = require('./webpack/devserver');
 var yargs = require('yargs');
 
-var args = yargs
-             .alias('p', 'production')
-			 .argv;
+var args = yargs.alias('p', 'production').argv;
 
 //enable node harmony flag automatically
 harmonize();
@@ -27,6 +25,6 @@ gulp.task('test', function(done) {
 	runSequence('build-webpack-production', done);
 });
 
-gulp.task('server', ['env','build'], bg('node', 'src/server/server.js') );
+gulp.task('server', ['env','build'], bg('node', 'src/server') );
 
 gulp.task('default', ['server']);

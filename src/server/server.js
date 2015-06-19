@@ -29,26 +29,26 @@ app.set('port', process.env.PORT || 3300 );
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
-//and routes
-app.get('/', function(req,res) {
-  //res.render('index');
-  res.end('Hello handsome!');
-});
-app.get('/about', function(req,res) {
-  //res.render('about');
-  res.end('I am beautiful and sexy webpage.');
-});
-
-app.get('/specrunner', function(req,res) {
-  //res.render('specrunner', { defaultLayout: null });
-  res.end('You can test me!');
-});
+// //and routes
+// app.get('/', function(req,res) {
+//   //res.render('index');
+//   res.end('Hello handsome!');
+// });
+// app.get('/about', function(req,res) {
+//   //res.render('about');
+//   res.end('I am beautiful and sexy webpage.');
+// });
+//
+// app.get('/specrunner', function(req,res) {
+//   //res.render('specrunner', { defaultLayout: null });
+//   res.end('You can test me!');
+// });
 
 // prefixing api calls w/ api
 app.use('/api', router);
 
 // and first api functionality
-router.route('/agents').get( function(req,res) { 
+router.route('/agents').get( function(req,res) {
   Agent.find( function(err, agents) {
     if (!err) {
       res.send (agents);
