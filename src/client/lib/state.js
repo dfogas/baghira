@@ -1,4 +1,4 @@
-// it is library so there is probably no harm at stating it here, even as ES6 class, fuck 
+// it is library so there is probably no harm at stating it here, even as ES6 class, fuck
 import EventEmitter from 'eventemitter3';
 import immutable from 'immutable';
 
@@ -48,6 +48,7 @@ export default class State extends EventEmitter {
     return this._state;
   }
 
+  // making the state trackable with serializing it to JS object in immutable
   save(): Object {
     return this._state.toJS();
   }

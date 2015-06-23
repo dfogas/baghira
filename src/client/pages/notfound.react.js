@@ -11,7 +11,7 @@ var notfound = React.createClass({
         <div className='notfound-page'>
           <p>
             Sorry, boy, but that's not how I work.
-            <Link to="notfound">Home</Link>
+            <Link to="index">Home</Link>
           </p>
         </div>
       </DocumentTitle>

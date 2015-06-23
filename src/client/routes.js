@@ -1,19 +1,28 @@
-var Index = require('./pages/index.react');
+var App = require('./app/app.react');
+var Home = require('./pages/home.react');
 var About = require('./pages/about.react');
 var Specrunner = require('./pages/specrunner.react');
 var NotFound = require('./pages/notfound.react');
 var React = require('react');
-var ReactRouter = require('react-router');
-var NotFoundRoute = ReactRouter.NotFoundRoute;
-var Route = ReactRouter.Route;
+import {DefaultRoute, NotFoundRoute, Route} from 'react-router';
 
 // pretty simple, aye, name can be used as links in pages
-var routes = (
-  <Route handler={Index} name="index" path="/">
+
+export default (
+  <Route handler={App} path="/">
+    <DefaultRoute handler={Home} name="index" />
     <NotFoundRoute handler={NotFound} name="notfound" />
-    <Route handler={About} name="about" path="about"/>
-    <Route handler={Specrunner} name="specrunner" path="specrunner"/>
+    <Route handler={About} name="about" />
+    <Route handler={Specrunner} name="specrunner" />
   </Route>
 );
 
-module.exports = routes;
+// var routes = (
+//   <Route handler={Index} name="index" path="/">
+//     <NotFoundRoute handler={NotFound} name="notfound" />
+//     <Route handler={About} name="about" path="about"/>
+//     <Route handler={Specrunner} name="specrunner" path="specrunner"/>
+//   </Route>
+// );
+
+// module.exports = routes;

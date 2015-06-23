@@ -27,7 +27,7 @@ function loadData(url, locale) {
 // TODO: Refactor.
 function renderPage(res, appState, url) {
   return new Promise(function(resolve, reject) {
-    const router = Router.create({
+    const router = Router.create({ // method of rackt's react-router
       routes,
       location: url,
       onError: reject,
@@ -44,7 +44,7 @@ function renderPage(res, appState, url) {
       }
     });
     router.run(function(Handler, routerState) {
-      state.load(appState);
+      state.load(appState); // this line is making trouble
       const html = getPageHtml(Handler, appState);
       const notFound = routerState.routes.some(function(route) { return route.name === 'not-found'; });
       const status = notFound ? 404 : 200;
