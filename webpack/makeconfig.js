@@ -4,31 +4,52 @@
 
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var NotifyPlugin = require('./notifyplugin');
+var constants = require('./constants');
 var webpack = require('webpack');
 var path = require('path');
 
 var loaders = {
-	'css': '',
+	'css': '!css-loader',
 	'less': '!less-loader',
 	'scss|sass': '!sass-loader',
 	'styl': '!stylus-loader'
 };
 
+var devtools = process.env.CONTINUOUS_INTEGRATION
+  ? 'inline-source-map'
+  // cheap-module-eval-source-map, because we want original source, but we don't
+  // care about columns, which makes this devtool faster than eval-source-map.
+  // http://webpack.github.io/docs/configuration.html#devtool
+  : 'cheap-module-eval-source-map';
+
 module.exports = function(isDevelopment) {
 
-	// place for stylesLoaders()
+	function stylesLoaders() {
+		return Object.keys(loaders).map(function(ext) {
+			var prefix = 'css-loader!autoprefixer-loader?browsers=last 2 version';
+			var extLoaders = prefix + loaders[ext];
+			var loader = isDevelopment
+				? 'style-loader!' + extLoaders
+				: ExtractTextPlugin.extract('style-loader', extLoaders);
+			return {
+				loader: loader,
+				test: new RegExp('\\.(' + ext + ')$')
+			};
+		});
+	}
 
 	var config = {
 		// not yet sure what cache and debug does, but it seems to be harmless at current stage so leaving them as placeholders with some values
 		cache: isDevelopment,
 		debug: isDevelopment,
+		devtool: isDevelopment ? devtools : '',
 		entry: {
 			app: isDevelopment ? [
 				'webpack-dev-server/client?http://localhost:8888',
 				// Why only-dev-server instead of dev-server:
 				// https://github.com/webpack/webpack/issues/418#issuecomment-54288041
 				'webpack/hot/only-dev-server',
-				'./src/client/main'
+				path.join(constants.SRC_DIR, './client/main')
 			] : [
 				'./src/client/main'
 			]
@@ -46,15 +67,17 @@ module.exports = function(isDevelopment) {
 					'babel-loader'
 				],
 				test: /\.js$/
-			}].concat()
+			}].concat(stylesLoaders())
 		},
 		output: isDevelopment ? {
-			path: path.join(__dirname,'/build.js/'),
+			path: constants.BUILD_DIR,
 			filename: '[name].js',
+			chunkFileName: '[name]-[chunkhash].js',
 			publicPath: 'http://localhost:8888/build'
 		} : {
-			path: path.join(__dirname,'/build.js/'),
-			filename: '[name].js'
+			path: constants.BUILD_DIR,
+			filename: '[name].js',
+			chunkFileName: '[name]-[chunkhash].js'
 		},
 		// plugins and resolve only as placeholders at this stage
 		plugins: (function() {
@@ -82,9 +105,9 @@ module.exports = function(isDevelopment) {
           }),
           new webpack.optimize.DedupePlugin(),
           new webpack.optimize.OccurenceOrderPlugin(),
-          new webpack.optimize.UglifyJsPlugin({
-            compress: {
-	              // Because uglify reports so many irrelevant warnings.
+					new webpack.optimize.UglifyJsPlugin({
+						compress: {
+							// Because uglify reports so many irrelevant warnings.
               warnings: false
             }
           })
@@ -92,10 +115,15 @@ module.exports = function(isDevelopment) {
       return plugins;
     })(),
 		resolve: {
-			extensions: [ '', '.js', '.json']
+			extensions: ['', '.js', '.json'],
+			modulesDirectories: ['src', 'node_modules'],
+			root: constants.ABSOLUTE_BASE,
+			alias: {
+				'react$': require.resolve(path.join(constants.NODE_MODULES_DIR, 'react'))
+			}
 		}
-	}
+	};
 
 	return config;
 
-}
+};

@@ -11,7 +11,8 @@ var index = React.createClass({
         <div className='home-page'>
           <p>
             Hello sexy!!
-            <Link to="index">Home</Link>
+            <br />
+            <Link to="about">About</Link>
           </p>
         </div>
       </DocumentTitle>
@@ -19,4 +20,4 @@ var index = React.createClass({
   }
 });
 
-module.exports = index;
+module.exports = index; // eslint-disable-line no-undef

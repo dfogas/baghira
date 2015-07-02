@@ -57,6 +57,7 @@ export default class State extends EventEmitter {
     console.log(JSON.stringify(this.save())); // eslint-disable-line no-console
   }
 
+  // cursor as way to make state an immutable value
   cursor(path: Array<string>) {
     return (arg) => {
       if (!arg)
@@ -68,3 +69,5 @@ export default class State extends EventEmitter {
   }
 
 }
+
+

@@ -6,7 +6,9 @@ import {RouteHandler} from 'react-router';
 
 // Load stores, but don't import anything. Read from global app state instead.
 // Remember: Anytime you create a new store, you have to load it here.
-// import '../app/store';
+
+import '../auth/store';
+import '../users/store';
 
 class App extends Component {
 
@@ -18,10 +20,10 @@ class App extends Component {
 
   getState() {
     return {
-      app: appState.appCursor(),
       auth: appState.authCursor(),
-      user: appState.userCursor(),
-      what: appState.whatCursor()
+      pendingActions: appState.pendingActionsCursor(),
+      user: appState.usersCursor(),
+      viewer: appState.usersCursor().get('viewer')
     };
   }
 
@@ -33,7 +35,7 @@ class App extends Component {
     appState.state.on('change', function() {
       console.time('app render'); //eslint-disable-line no-console
       this.setState(this.getState(), () => {
-        console.timeEnd('app render');
+        console.timeEnd('app render'); // eslint-disable-line no-console
       });
     });
   }
@@ -72,9 +74,8 @@ class App extends Component {
           </p>
         </footer>
       </div>
-    )
+    );
   }
-
 }
 
 

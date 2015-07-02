@@ -9,7 +9,7 @@ var router = express.Router();
 
 //connect to local instance of mongodb (required install)
 mongoose.connect('mongodb://localhost/mbase');
-mongoose.connection.once( 'open', function cb() { console.log ('successfully connected to MongoDB'); });
+mongoose.connection.once('open', function cb() { console.log('successfully connected to MongoDB'); });
 
 // defining mongoose schema and model for api
 var AgentSchema = new mongoose.Schema({
@@ -23,7 +23,7 @@ var AgentSchema = new mongoose.Schema({
 var Agent = mongoose.model('Agent', AgentSchema);
 
 // rather self-explaining set of config and middleware linkage
-app.set('port', process.env.PORT || 3300 );
+app.set('port', process.env.PORT||3300);
 //app.use('/build', express.static('build'));
 //app.use('/assets', express.static('assets'));
 app.use(bodyParser.json());
@@ -48,7 +48,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use('/api', router);
 
 // and first api functionality
-router.route('/agents').get( function(req,res) {
+router.route('/agents').get(function(req, res) {
   Agent.find( function(err, agents) {
     if (!err) {
       res.send (agents);

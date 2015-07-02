@@ -11,6 +11,7 @@ var about = React.createClass({
         <div className='about-page'>
           <p>
             I am beautiful and willing Page!
+            <br />
             <Link to="index">Home</Link>
           </p>
         </div>
@@ -19,4 +20,4 @@ var about = React.createClass({
   }
 });
 
-module.exports = about;
+module.exports = about; // eslint-disable-line no-undef

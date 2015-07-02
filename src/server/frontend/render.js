@@ -3,13 +3,13 @@ import Html from './html.react';
 import Promise from 'bluebird';
 import React from 'react';
 import Router from 'react-router';
-import config from './config';
-import initialState from './initialState';
-import routes from '../client/routes';
-import {state} from '../client/state';
+import config from '../config';
+import initialState from '../initialState';
+import routes from '../../client/routes';
+import {state} from '../../client/state';
 
 function render(req, res, locale) { // OK exports this render function
-  console.log('rendering',req.originalUrl);
+  console.log('rendering', req.originalUrl);
   const url = req.originalUrl;
   return loadData(url, locale)
 //?this is possibly behind my current troubles

@@ -1,12 +1,13 @@
-'Copyright David Fogas 2015, MIT license'
+//'Copyright David Fogas 2015, MIT license';
 
-'use strict'
+'use strict';
 
 var webpack = require('webpack');
+var gutil = require('gulp-util');
 
-module.exports = function (webpackConfig) {
-	return function (callback) {
-		webpack(webpackConfig, function ( fatalError, stats) {
+module.exports = function(webpackConfig) {
+	return function(callback) {
+		webpack(webpackConfig, function(fatalError, stats) {
 
 			var jsonStats = stats.toJson();
 			var buildError = fatalError || jsonStats.errors[0] || jsonStats.warnings[0];

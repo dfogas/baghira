@@ -1,8 +1,7 @@
 //var Component = require('../components/component.react');
 var DocumentTitle = require('react-document-title');
 var React = require('react');
-var ReactRouter = require('react-router');
-var Link = ReactRouter.Link;
+import {Link} from 'react-router';
 
 var specrunner = React.createClass({
   render: function() {
@@ -19,4 +18,4 @@ var specrunner = React.createClass({
   }
 });
 
-module.exports = specrunner;
+export default specrunner;

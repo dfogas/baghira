@@ -11,6 +11,7 @@ var notfound = React.createClass({
         <div className='notfound-page'>
           <p>
             Sorry, boy, but that's not how I work.
+            <br />
             <Link to="index">Home</Link>
           </p>
         </div>
@@ -19,4 +20,4 @@ var notfound = React.createClass({
   }
 });
 
-module.exports = notfound;
+module.exports = notfound; // eslint-disable-line no-undef

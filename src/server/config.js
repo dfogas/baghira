@@ -1,6 +1,7 @@
 var nconf = require('nconf');
 
 // Hierarchical node.js configuration with files, environment variables, command-line arguments, and atomic object merging.
+nconf.env('__');
 
 var config = {
   appLocales: ['en', 'fr'],
@@ -14,7 +15,7 @@ var config = {
     // Server restarting invalidates require cache, no more stale html.
     hook: true
   },
-  port: process.env.PORT || 8000,
+  port: process.env.PORT || 7000,
   version: require('../../package'),
   webpackStylesExtensions: ['css', 'less', 'sass', 'scss', 'styl']
 };

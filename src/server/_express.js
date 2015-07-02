@@ -4,7 +4,7 @@ import compression from 'compression';
 import config from './config';
 import express from 'express';
 // import favicon from 'serve-favicon';
-import render from './render';
+import render from './frontend/render';
 
 export default function() {
 

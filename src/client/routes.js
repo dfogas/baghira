@@ -3,6 +3,8 @@ var Home = require('./pages/home.react');
 var About = require('./pages/about.react');
 var Specrunner = require('./pages/specrunner.react');
 var NotFound = require('./pages/notfound.react');
+var Login = require('./pages/login.react');
+var Me = require('./pages/me.react');
 var React = require('react');
 import {DefaultRoute, NotFoundRoute, Route} from 'react-router';
 
@@ -14,6 +16,8 @@ export default (
     <NotFoundRoute handler={NotFound} name="notfound" />
     <Route handler={About} name="about" />
     <Route handler={Specrunner} name="specrunner" />
+    <Route handler={Login} name="login" />
+    <Route handler={Me} name="me" />
   </Route>
 );
 

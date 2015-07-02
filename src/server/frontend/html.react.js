@@ -1,7 +1,8 @@
+import Component from '../../client/components/component.react';
 import React from 'react';
 
-var Html = React.createClass({
-  render: function() {
+class Html extends Component {
+  render() {
     // styles link when production, dev handled by live reload
     // const linkStyles = this.props.isProduction &&
     //   <link
@@ -18,11 +19,11 @@ var Html = React.createClass({
       </html>
     );
   }
-});
+}
 
 Html.propTypes = {
   bodyHtml: React.PropTypes.string.isRequired,
-  title: React.PropTypes.string.isRequired,
+  title: React.PropTypes.string.isRequired
   // isProduction: React.PropTypes.bool.isRequired,
   // version: React.PropTypes.string.isRequired
 };
