@@ -1,5 +1,9 @@
 #How I built my devstack
 
+##Final note
+Ok, so with this final push I am abandoning this project. I learned a lot while trying to assemble this devstack. I wonder whether it was worth the time and effort. For my next project I am choosing Dan'scalable
+Este, (or better I have chosen, because it is underway), which is simply beautiful. So far the only features that need solving there are circular dependencies and test framework (jest was no go), mocking environment for tests.
+
 ###Intro
 ###=====
 

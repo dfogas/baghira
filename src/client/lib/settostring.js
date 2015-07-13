@@ -8,5 +8,3 @@ export default function setToString(prefix: string, object: Object) {
   });
 }
 
-// used in actions of auth
-// evidently, its own implementation of flux

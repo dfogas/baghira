@@ -7,7 +7,7 @@ import {Server} from 'http';
 const app = express();
 const server = Server(app);
 
-// Load API
+// Load API.
 app.use('/api/v1', api);
 
 // Load react-js frontend.

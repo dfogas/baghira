@@ -1,4 +1,3 @@
-// you wish
 import IntlMessageFormat from 'intl-messageformat';
 import IntlRelativeFormat from 'intl-relativeformat';
 import {i18nCursor} from '../state';
@@ -10,46 +9,38 @@ const intlRelativeFormat = new IntlRelativeFormat;
 
 function getCachedInstanceOf(message) {
   if (message in cachedInstances)
-    return cachedInstances(message);
-  //TODO: ADD LOCALES SUPPORT
+    return cachedInstances[message];
+  // TODO: Add locales support.
   cachedInstances[message] = new IntlMessageFormat(message);
   return cachedInstances[message];
 }
 
-export default function msg(path, values=null): string {
+export function msg(path, values = null): string {
   const pathParts = ['messages'].concat(path.split('.'));
   const message = i18nCursor(pathParts);
 
-  if (message === null)
+  if (message == null)
     throw new ReferenceError('Could not find Intl message: ' + path);
 
   return !values ? message : getCachedInstanceOf(message).format(values);
 }
 
-Object.defineProperty(exports, '__esModule', { //eslint-disable-line no-undef
-  value: true
-});
-exports.msgs = msgs; //eslint-disable-line no-undef
+// get List[.slice(start[, end])] of message Maps like [{key: message_key, txt: message_text}, ...]
+export function msgs(path, values = null, ...sliceParams): List<Map> {
+  const pathParts = ['messages'].concat(path.split('.'));
+  const messages = i18nCursor(pathParts);
 
-function msgs(path) {
-  for (var _len = arguments.length, sliceParams = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++)
-    sliceParams[_key - 2] = arguments[_key];
+  if (messages == null)
+    throw new ReferenceError('Could not find Intl messages: ' + path);
+  if (!List.isList(messages))
+    throw new ReferenceError('Not a List of Intl messages: ' + path);
 
-  var values = arguments[1] === undefined ? null : arguments[1]; //eslint-disable-line no-undefined
+  const messageList = !sliceParams ? messages : List.prototype.slice.apply(messages, sliceParams);
 
-  var pathParts = ['messages'].concat(path.split('.'));
-  var messages = i18nCursor(pathParts);
-
-  if (messages == null) throw new ReferenceError('Could not find Intl messages: ' + path);
-  if (!List.isList(messages)) throw new ReferenceError('Not a List of Intl messages: ' + path);
-
-  var messageList = !sliceParams ? messages : List.prototype.slice.apply(messages, sliceParams);
-
-  return !values ? messageList : messageList.map(function(item) {
-    return item.merge(Map({
+  return !values ? messageList : messageList.map((item) =>
+    item.merge(Map({
       txt: getCachedInstanceOf(item.get('txt')).format(values)
-    }));
-  });
+    })));
 }
 
 export function relativeDateFormat(date, options?): string {

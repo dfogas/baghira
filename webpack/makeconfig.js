@@ -39,7 +39,6 @@ module.exports = function(isDevelopment) {
 	}
 
 	var config = {
-		// not yet sure what cache and debug does, but it seems to be harmless at current stage so leaving them as placeholders with some values
 		cache: isDevelopment,
 		debug: isDevelopment,
 		devtool: isDevelopment ? devtools : '',
@@ -52,9 +51,21 @@ module.exports = function(isDevelopment) {
 				path.join(constants.SRC_DIR, './client/main')
 			] : [
 				'./src/client/main'
-			]
+			],
+			appintl: isDevelopment ? [
+        'webpack-dev-server/client?http://localhost:8888',
+        // Why only-dev-server instead of dev-server:
+        // https://github.com/webpack/webpack/issues/418#issuecomment-54288041
+        'webpack/hot/only-dev-server',
+        path.join(constants.NODE_MODULES_DIR, 'intl/Intl.js'),
+        path.join(constants.NODE_MODULES_DIR, 'intl/locale-data/jsonp/en.js'),
+        path.join(constants.SRC_DIR, 'client/main.js')
+      ] : [
+        path.join(constants.NODE_MODULES_DIR, 'intl/Intl.js'),
+        path.join(constants.NODE_MODULES_DIR, 'intl/locale-data/jsonp/en.js'),
+        path.join(constants.SRC_DIR, 'client/main.js')
+      ]
 		},
-		// loaders only as placeholder at current stage
 		module: {
 			loaders: [{
 				loader: 'url-loader?limit=100000',
@@ -79,7 +90,6 @@ module.exports = function(isDevelopment) {
 			filename: '[name].js',
 			chunkFileName: '[name]-[chunkhash].js'
 		},
-		// plugins and resolve only as placeholders at this stage
 		plugins: (function() {
       var plugins = [
         new webpack.DefinePlugin({

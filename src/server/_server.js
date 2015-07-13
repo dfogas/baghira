@@ -23,7 +23,7 @@ var AgentSchema = new mongoose.Schema({
 var Agent = mongoose.model('Agent', AgentSchema);
 
 // rather self-explaining set of config and middleware linkage
-app.set('port', process.env.PORT||3300);
+app.set('port', process.env.PORT || 3300);
 //app.use('/build', express.static('build'));
 //app.use('/assets', express.static('assets'));
 app.use(bodyParser.json());
@@ -49,17 +49,16 @@ app.use('/api', router);
 
 // and first api functionality
 router.route('/agents').get(function(req, res) {
-  Agent.find( function(err, agents) {
-    if (!err) {
-      res.send (agents);
-    } else {
-      return console.error (err);
-    }
+  Agent.find(function(err, agents) {
+    if (!err)
+      res.send(agents);
+    else
+      return console.error(err);
   });
 });
 
 // handle 404 error
-app.use( function (req, res, next) {
+app.use(function(req, res, next) {
   res.status('404');
   res.send('404 - Not Found');
 });

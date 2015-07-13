@@ -8,7 +8,6 @@ var gutil = require('gulp-util');
 module.exports = function(webpackConfig) {
 	return function(callback) {
 		webpack(webpackConfig, function(fatalError, stats) {
-
 			var jsonStats = stats.toJson();
 			var buildError = fatalError || jsonStats.errors[0] || jsonStats.warnings[0];
 

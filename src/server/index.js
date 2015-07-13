@@ -6,7 +6,7 @@ if (config.isProduction || require('piping')(config.piping)) {
 
   // Load and use polyfill for ECMA-402.
   if (!global.Intl)
-   global.Intl = require('intl');
+    global.Intl = require('intl');
 
   require('babel/register');
 

@@ -17,7 +17,7 @@ class Login extends Component {
     e.preventDefault();
     const fields = this.getForm().fields.toJS();
     actions.login(fields)
-      .then(function() {
+      .then(() => {
         this.redirectAfterLogin();
       })
       .catch(focusInvalidField(this));
@@ -33,10 +33,10 @@ class Login extends Component {
     const {pendingActions} = this.props;
 
     return (
-      <div className='login'>
-        <form onSubmit={function(e) { return this.onFormSubmit(e) }}>
-          <fieldset>
-            <legend>{msg(auth.form.legend)}</legend>
+      <div className="login">
+        <form onSubmit={(e) => this.onFormSubmit(e)}>
+          <fieldset disabled={pendingActions.has(actions.login.toString())}>
+            <legend>{msg('auth.form.legend')}</legend>
             <input
               autoFocus
               name="email"
@@ -44,31 +44,32 @@ class Login extends Component {
               placeholder={msg('auth.form.placeholder.email')}
               value={form.fields.email}
             />
-          <br />
-          <input
-            name="password"
-            onChange={actions.updateFormField}
-            placeholder={msg('auth.form.placeholder.password')}
-            type="password"
-            value={form.fields.password}
-          />
-          <br />
-          <button
-            children={msg('auth.form.button.login')}
-            type="submit"
-          />
-          {/*
-            <button type="submit">{msg('auth.form.button.signup')}</button>
-          */}
-          {form.error &&
-            <span className='error-message'>{form.error.message}</span>
-          }
-          <div>{msg('auth.form.hint')}</div>
+            <br />
+            <input
+              name="password"
+              onChange={actions.updateFormField}
+              placeholder={msg('auth.form.placeholder.password')}
+              type="password"
+              value={form.fields.password}
+            />
+            <br />
+            <button
+              children={msg('auth.form.button.login')}
+              type="submit"
+            />
+            {/*
+             <button type="submit">{msg('auth.form.button.signup')}</button>
+            */}
+            {form.error &&
+              <span className="error-message">{form.error.message}</span>
+            }
+            <div>{msg('auth.form.hint')}</div>
           </fieldset>
         </form>
       </div>
     );
   }
+
 }
 
 Login.propTypes = {

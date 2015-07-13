@@ -1,37 +1,28 @@
+import * as state from '../../client/state';
 import DocumentTitle from 'react-document-title';
 import Html from './html.react';
 import Promise from 'bluebird';
 import React from 'react';
 import Router from 'react-router';
 import config from '../config';
-import initialState from '../initialState';
+import immutable from 'immutable';
+import initialState from '../initialstate';
 import routes from '../../client/routes';
-import {state} from '../../client/state';
+import stateMerger from '../lib/merger';
 
-function render(req, res, locale) { // OK exports this render function
-  console.log('rendering', req.originalUrl);
-  const url = req.originalUrl;
-  return loadData(url, locale)
-//?this is possibly behind my current troubles
-    .then(function(appState) {return renderPage(res, appState, url); });
+export default function render(req, res, userState = {}) {
+  const appState = immutable.fromJS(initialState).mergeWith(stateMerger, userState).toJS();
+  return renderPage(req, res, appState);
 }
 
-function loadData(url, locale) {
-  // TODO: Preload and merge user specific state.
-  const appState = initialState; // o.k. initialState is here
-  return new Promise(function(resolve, reject) {
-    resolve(appState);
-  });
-}
+function renderPage(req, res, appState) {
+  return new Promise((resolve, reject) => {
 
-// TODO: Refactor.
-function renderPage(res, appState, url) {
-  return new Promise(function(resolve, reject) {
-    const router = Router.create({ // method of rackt's react-router
+    const router = Router.create({
       routes,
-      location: url,
+      location: req.originalUrl,
       onError: reject,
-      onAbort: function(abortReason) {
+      onAbort: (abortReason) => {
         // Some requireAuth higher order component requested redirect.
         if (abortReason.constructor.name === 'Redirect') {
           const {to, params, query} = abortReason;
@@ -43,27 +34,34 @@ function renderPage(res, appState, url) {
         reject(abortReason);
       }
     });
-    router.run(function(Handler, routerState) {
-      state.load(appState); // this line is making trouble
-      const html = getPageHtml(Handler, appState);
-      const notFound = routerState.routes.some(function(route) { return route.name === 'not-found'; });
+
+    router.run((Handler, routerState) => {
+      const html = loadAppStateThenRenderHtml(Handler, appState);
+      const notFound = routerState.routes.some(route => route.name === 'not-found');
       const status = notFound ? 404 : 200;
       res.status(status).send(html);
       resolve();
     });
+
   });
 }
 
+function loadAppStateThenRenderHtml(Handler, appState) {
+  state.appState.load(appState); // defined in '../../client/lib/state'
+  return getPageHtml(Handler, appState);
+}
+
 function getPageHtml(Handler, appState) {
-  const appHtml = `<div id="app">${React.renderToString(<Handler />)}</div>`; // render to string seems to be the prerequisite to isomorphic funcionality
+  const appHtml = `<div id="app">${React.renderToString(<Handler />)}</div>`;
   const appScriptSrc = config.isProduction
     ? '/build/app.js?v=' + config.version
     : '//localhost:8888/build/app.js';
 
+  // Serialize app state for client.
   let scriptHtml = `
     <script>
       (function() {
-        window._appState = ${JSON.stringify(appState)};
+        window._appState = ${JSON.stringify(appState)}; // ha!
         var app = document.createElement('script'); app.type = 'text/javascript'; app.async = true;
         var src = '${appScriptSrc}';
         // IE<11 and Safari need Intl polyfill.
@@ -86,7 +84,7 @@ function getPageHtml(Handler, appState) {
 
   const title = DocumentTitle.rewind();
 
-  return '<!DOCTYPE html>' + React.renderToStaticMarkup(//isomorphic seems it to be after all
+  return '<!DOCTYPE html>' + React.renderToStaticMarkup(
     <Html
       bodyHtml={appHtml + scriptHtml}
       isProduction={config.isProduction}
@@ -95,5 +93,3 @@ function getPageHtml(Handler, appState) {
     />
   );
 }
-
-module.exports = render;

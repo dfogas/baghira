@@ -2,6 +2,7 @@ import express from 'express';
 
 const router = express.Router();
 
+// login handling logic stored here, interesting
 router.route('/login')
   .post((req, res, next) => {
 
